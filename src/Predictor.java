@@ -28,24 +28,29 @@ public class Predictor {
     public long getTranslatedValue(String address)
     {
         long result;
-        long addr = Long.parseLong(address);
+        long addr = Long.parseLong(address,16);
         addr = addr>>2;
+        //System.out.println("addr: "+address+" >>2: "+Long.toHexString(addr));
         //indexValue
         long iPart =  (addr&((long)(Math.pow(2,iValue-hValue) - 1)  ));
         long hPart = (hValue>0)?((addr>>(iValue-hValue))&((long)(Math.pow(2,hValue) - 1)  )):0;
+        //System.out.println("H: "+Long.toBinaryString(hPart)+" GHR: "+Long.toBinaryString(globalHvalue));
         if (hValue>0)
             hPart = hPart^globalHvalue;
         result = (hPart<<(iValue-hValue))+iPart;
+        //System.out.println("Ex-orH: "+Long.toBinaryString(hPart)+" + i: "+Long.toBinaryString(iPart)+" = "+Long.toBinaryString(result));
         return result;
     }
 
     public void updateHValue(int value)
     {
-        globalHvalue = (globalHvalue<<1)&((long)(Math.pow(2,hValue) - 1)  );
+        //System.out.println("prev:"+Long.toBinaryString(globalHvalue)+" value:"+value);
+        globalHvalue = (globalHvalue>>1);
         if(value==1)
             globalHvalue= globalHvalue|(1<<(hValue-1));
         else
-            globalHvalue= globalHvalue&(1<<((long)(Math.pow(2,hValue-1) - 1)  ));
+            globalHvalue= globalHvalue&(((long)(Math.pow(2,hValue-1) - 1)  ));
+        //System.out.println("new:"+Long.toBinaryString(globalHvalue));
 
     }
 

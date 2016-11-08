@@ -11,8 +11,9 @@ public class sim_bp {
 
     public void startSimulate(BTB btbCache, Predictor pred, String traceFile)
     {
-        String line="",values[],address,btbTranslate[];
+        String line,values[],address="",btbTranslate[];
         boolean checkPredictor = true,outcome, predOutcome;
+        //int counter=0;
         try
         {
             BufferedReader br = new BufferedReader(new FileReader(traceFile));
@@ -25,7 +26,7 @@ public class sim_bp {
                 {
                     btbTranslate = btbCache.getTranslatedValues(address);
                     checkPredictor = btbCache.inBTB( Integer.parseInt(btbTranslate[0]) , btbTranslate[1]);
-                    if (outcome!=checkPredictor)
+                    if (outcome!=checkPredictor && outcome==true)
                         btbCache.misses+=1;
                     else
                         btbCache.hits+=1;
@@ -39,11 +40,29 @@ public class sim_bp {
                     else
                         pred.hits+=1;
                 }
+               /* counter++;
+                if (counter>10)
+                    break;*/
             }
 
         }catch(Exception e)
         {
             System.out.println("Some error:"+e.getMessage());
+            e.printStackTrace();
+            System.out.println("Address:"+address);
+        }
+    }
+
+    public void printResults(Predictor pred, BTB btbCache)
+    {
+        if(pred.predictorType==Constants.GSHARE)
+            System.out.println("Final GHR value:"+pred.globalHvalue+" :"+Long.toHexString(pred.globalHvalue));
+
+        System.out.println("Number of predictions from the branch predictor: "+pred.totalPredictions);
+        System.out.println("Number of mispredictions from the branch predictor: "+pred.misses);
+
+        if(btbCache!=null) {
+            System.out.println("Number of mispredictions from the BTB predictor: "+btbCache.misses);
         }
     }
 
@@ -87,6 +106,8 @@ public class sim_bp {
 
             pred = new Predictor(indexPred,hValue,Constants.GSHARE);
 
+            //System.out.println("i: "+indexPred+" h:"+hValue);
+
             if ( indexBTB!=0 && assocBTB!=0 )
                 btbCache = new BTB(indexBTB,assocBTB);
 
@@ -101,7 +122,9 @@ public class sim_bp {
             System.exit(0);
         }
 
-        new sim_bp().startSimulate(btbCache,pred,traceFile);
+        sim_bp obj = new sim_bp();
+        obj.startSimulate(btbCache,pred,traceFile);
+        obj.printResults(pred,btbCache);
 
     }
 }
