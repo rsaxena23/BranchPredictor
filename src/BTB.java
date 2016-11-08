@@ -38,8 +38,9 @@ public class BTB {
 
     public boolean inBTB(int index, String tag)
     {
+        int i;
         TagEntry tempEntry=null;
-        for(int i=0;i<assoc;i++)
+        for(i=0;i<assoc;i++)
         {
             tempEntry = tagArray[index][i];
             if(!tempEntry.valid || tempEntry.value==null)
@@ -51,7 +52,8 @@ public class BTB {
                 return true;
             }
         }
-        if(index<assoc)
+
+        if(i<assoc)
         {
             tempEntry.valid = true;
             tempEntry.value=tag;

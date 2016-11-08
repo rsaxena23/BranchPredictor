@@ -40,8 +40,8 @@ public class sim_bp {
                     else
                         pred.hits+=1;
                 }
-               /* counter++;
-                if (counter>10)
+                /*counter++;
+                if (counter>20)
                     break;*/
             }
 
