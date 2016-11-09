@@ -4,5 +4,6 @@
 public class TagEntry {
     boolean valid=false;
     String value=null;
+    String pcValue=null;
     int accessTime=0;
 }

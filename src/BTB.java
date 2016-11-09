@@ -36,7 +36,7 @@ public class BTB {
         return values;
     }
 
-    public boolean inBTB(int index, String tag)
+    public boolean inBTB(int index, String tag,String pcTag)
     {
         int i;
         TagEntry tempEntry=null;
@@ -57,15 +57,16 @@ public class BTB {
         {
             tempEntry.valid = true;
             tempEntry.value=tag;
+            tempEntry.pcValue = pcTag;
             sysTimer+=1;
             tempEntry.accessTime = sysTimer;
         }
         else
-            replace(index,tag);
+            replace(index,tag,pcTag);
         return false;
     }
 
-    public void replace(int index,String tag)
+    public void replace(int index,String tag, String pcTag)
     {
         int minValue = tagArray[index][0].accessTime;
         int minPos = 0;
@@ -81,6 +82,7 @@ public class BTB {
         }
 
         tagArray[index][minPos].value = tag;
+        tagArray[index][minPos].pcValue = pcTag;
         tagArray[index][minPos].valid = true;
         sysTimer+=1;
         tagArray[index][minPos].accessTime = sysTimer;

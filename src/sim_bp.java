@@ -28,7 +28,7 @@ public class sim_bp {
                 if(btbCache!=null)
                 {
                     btbTranslate = btbCache.getTranslatedValues(address);
-                    checkPredictor = btbCache.inBTB( Integer.parseInt(btbTranslate[0]) , btbTranslate[1]);
+                    checkPredictor = btbCache.inBTB( Integer.parseInt(btbTranslate[0]) , btbTranslate[1], address);
                     if (outcome!=checkPredictor && outcome==true)
                         btbCache.misses+=1;
                     else
@@ -80,7 +80,7 @@ public class sim_bp {
                 for(j=0;j<btbCache.assoc;j++)
                 {
                     tempEntry = btbCache.tagArray[i][j];
-                    System.out.print(" {"+((tempEntry.valid)?1:0)+", 0x "+tempEntry.value+"} ");
+                    System.out.print(" {"+((tempEntry.valid)?1:0)+", 0x "+tempEntry.pcValue+"} ");
                 }
                 System.out.println();
             }
@@ -96,7 +96,7 @@ public class sim_bp {
             System.out.println("\nFinal Gshare Table Contents:");
             for(i=0;i<pred.gPred.predictArray.length;i++)
                 System.out.println("table["+i+"]: "+pred.gPred.predictArray[i]);
-            System.out.println("Final GHR Contents: 0x "+Long.toHexString(pred.globalHvalue));
+            System.out.println("\nFinal GHR Contents: 0x "+Long.toHexString(pred.globalHvalue));
 
             System.out.println("\nFinal Chooser Table Contents:");
             for(i=0;i<pred.predictArray.length;i++)
@@ -116,14 +116,14 @@ public class sim_bp {
         }
 
         if(pred.predictorType==Constants.GSHARE)
-            System.out.println("Final GHR Contents: 0x "+Long.toHexString(pred.globalHvalue));
+            System.out.println("\nFinal GHR Contents: 0x "+Long.toHexString(pred.globalHvalue));
 
         System.out.println("\nFinal Branch Predictor Statistics:");
         System.out.println("a. Number of branches: "+a);
         System.out.println("b. Number of predictions from the branch predictor: "+b);
         System.out.println("c. Number of mispredictions from the branch predictor: "+c);
         System.out.println("d. Number of mispredictions from the BTB predictor: "+d);
-        System.out.println("e. Branch misprediction rate: "+(Math.round(e*100)/100.0));
+        System.out.println("e. Branch misprediction rate: "+(Math.round(e*10000)/100.0));
     }
 
     public static void main(String[] args)
